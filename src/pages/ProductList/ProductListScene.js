@@ -5,7 +5,6 @@ import { commaNum } from '../../settings/utils/string'
 import { inject, observer } from 'mobx-react';
 
 function ProductListScene({ navigation, userStore }) {
-    console.log('userstore =====> ', userStore)
     const [productData, setProductData] = useState()
     const [currentData, setCurrentData] = useState()
     const [dataIndex, setDataIndex] = useState()
@@ -35,7 +34,8 @@ function ProductListScene({ navigation, userStore }) {
             setDataIndex(dataIndex + 1)
             setCurrentData(data)
         } else {
-            alert('마지막 페이지입니다.')
+            alert(`마지막 페이지입니다. ${JSON.stringify(productItems)}`)
+            
         }
     }
 
@@ -49,7 +49,7 @@ function ProductListScene({ navigation, userStore }) {
         if(userStore.CartList.length >= 3) {
             alert('장바구니에는 최대 3개의 상품만 담길 수 있습니다.')
         } else {
-            userStore.addCartList(item)
+            userStore.addCartList({...item, number: 1, checked: true})
         }
         
     }
@@ -108,7 +108,7 @@ function ProductListScene({ navigation, userStore }) {
             <View style={{ flex: 0.1, justifyContent: 'center', alignItems: 'center' }}>
                 <Text style={{ fontSize: 20, fontWeight: "bold", color: '#202020' }}>상품리스트</Text>
             </View>
-            <View style={{ flex: 1 }}>
+            <View style={{flex:1}}>
                 <FlatList
                     data={currentData}
                     renderItem={({ item }) => renderItem(item)}
@@ -116,8 +116,6 @@ function ProductListScene({ navigation, userStore }) {
                     ListFooterComponent={() => renderFooter()}
                     refreshing={isRefreshing}
                     onRefresh={() => setRefreshing()}
-                    removeClippedSubviews={true}
-                    progressViewOffset={true}
                     extraData={userStore.CartList}
                 />
                 {/* <Text>{JSON.stringify(productData)}</Text> */}

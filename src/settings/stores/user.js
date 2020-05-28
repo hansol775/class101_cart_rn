@@ -31,6 +31,7 @@ export default class UserStore {
 
     @action
     async deleteCartList(index) {
+        console.log(index)
         let lists = [...this.CartList];
         lists.splice(index, 1);
         AsyncStorage.setItem(this.CartKey, JSON.stringify(lists));
